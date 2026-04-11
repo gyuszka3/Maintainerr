@@ -878,6 +878,13 @@ export class CollectionsService {
   }> {
     try {
       const mediaServer = await this.getMediaServer();
+      const libraries = await mediaServer.getLibraries();
+      const mediaItems = libraries.map(async (library) => {
+        return await mediaServer.getLibraryContents(library.id);
+      });
+      const randomMediaId = (await Promise.all(mediaItems))
+        .pop()
+        ?.items.pop()?.id;
       let mediaCollection: MediaCollection;
 
       if (
@@ -892,6 +899,7 @@ export class CollectionsService {
           summary: collection?.description,
           sortTitle: collection?.sortTitle,
           type: collection.type,
+          ids: randomMediaId ? [randomMediaId] : undefined, // Some media servers require at least 1 item to be added at creation, so we add a random item and then remove it after collection creation
         });
 
         // Store the media server ID from the created collection
@@ -1367,6 +1375,7 @@ export class CollectionsService {
                 summary: collection.description,
                 sortTitle: collection.sortTitle,
                 type: collection.type,
+                ids: newMedia.map((m) => m.mediaServerId),
               });
             }
           }

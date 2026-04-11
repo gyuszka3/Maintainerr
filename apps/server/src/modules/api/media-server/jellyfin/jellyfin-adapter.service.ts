@@ -2,8 +2,8 @@ import { Jellyfin, type Api } from '@jellyfin/sdk';
 import {
   BaseItemKind,
   ItemFields,
-  LocationType,
   ItemSortBy,
+  LocationType,
   SortOrder,
   type UserItemDataDto,
 } from '@jellyfin/sdk/lib/generated-client/models';
@@ -1106,6 +1106,7 @@ export class JellyfinAdapterService implements IMediaServerService {
         parentId: params.libraryId,
         // isLocked enables composite image generation from collection items
         isLocked: true,
+        ids: params.ids,
       });
 
       const collectionId = response.data.Id;
