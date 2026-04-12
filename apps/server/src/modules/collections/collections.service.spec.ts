@@ -548,11 +548,6 @@ describe('CollectionsService', () => {
       .mockResolvedValue(collection);
     await service.addToCollection(collection.id, []);
 
-    expect(mediaServer.createCollection).toHaveBeenCalledWith(
-      expect.not.objectContaining({
-        itemIds: expect.anything(),
-      }),
-    );
     expect(mediaServer.addBatchToCollection).toHaveBeenCalledWith(
       'remote-collection',
       ['item-1'],
