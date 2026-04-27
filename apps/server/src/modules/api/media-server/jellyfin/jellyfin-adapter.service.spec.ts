@@ -54,6 +54,7 @@ jest.mock('@jellyfin/sdk', () => ({
     createApi: jest.fn().mockReturnValue({
       accessToken: '',
       configuration: {},
+      basePath: 'baseUrl',
     }),
   })),
 }));

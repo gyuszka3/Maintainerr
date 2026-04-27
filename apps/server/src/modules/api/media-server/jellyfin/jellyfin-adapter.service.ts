@@ -1292,10 +1292,13 @@ export class JellyfinAdapterService implements IMediaServerService {
 
     try {
       const userId = await this.getUserId();
+      const originalBasePath = this.api.basePath;
+      this.api.basePath = this.api.basePath.concat('/Users/' + userId);
       const response = await getUserLibraryApi(this.api).getItem({
         itemId: collectionId,
         userId,
       });
+      this.api.basePath = originalBasePath;
 
       return response.data
         ? JellyfinMapper.toMediaCollection(response.data)
@@ -1332,6 +1335,7 @@ export class JellyfinAdapterService implements IMediaServerService {
         parentId: params.libraryId,
         // isLocked enables composite image generation from collection items
         isLocked: true,
+        ids: params.ids,
       });
 
       const collectionId = response.data.Id;
